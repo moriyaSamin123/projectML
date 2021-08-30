@@ -1,0 +1,128 @@
+<form [formGroup]="searchKeyForm" (ngSubmit)="onSubmit()">
+  <div class="bg-info m-3 p-4 borderlaws">
+    
+    <div class="row m-3" >
+      <div class="col-md-3">
+        <span class="text-light">בחר סוג חקיקה</span>
+
+        
+        <kendo-dropdownlist [data]="searchKey1" 
+        
+       formControlName="selectTypeLaw"></kendo-dropdownlist>
+      
+      
+       </div>
+       <!-- <mdb-error *ngIf="searchKeyForm.selectTypeLaw.invalid && (searchKeyForm.selectTypeLaw.dirty || searchKeyForm.touched)">Input invalid
+      </mdb-error>
+        -->
+     
+        <div class="col-md-3">
+         <div class="example-wrapper">
+           <span class="text-light">בחר חוק מסוים</span>
+           <kendo-autocomplete
+            formControlName="selectIDLaw"
+             [data]="arrayLaw"
+             [placeholder]="' שם חוק'"
+           >
+           </kendo-autocomplete>
+         </div>
+       
+        </div>
+        <div class="col-md-3">
+         <div class="example-wrapper">
+           <span class="text-light">בחר סעיף בחוק</span>
+           <kendo-autocomplete
+           
+             formControlName="selectIDParagraph"
+             [data]="arrayParagraph"
+             [placeholder]="'קוד סעיף'"
+             class="countries"
+           >
+           </kendo-autocomplete>
+         </div>
+        </div>
+       </div>
+     <div class="row m-3">
+        
+      <div class="col-md-3">
+       <span class="text-light">בחר סוג הפניה</span>
+        <kendo-dropdownlist 
+       
+        [data]="searchKey2" formControlName="selectTypeRefQA"></kendo-dropdownlist>
+      </div>
+      <div class="col-md-3">
+          <span class="text-light">בחר מיקום הפניה</span>
+          <kendo-dropdownlist [data]="searchKey3" formControlName="selectLocationRef"></kendo-dropdownlist>
+      </div>
+     </div>
+  </div>
+  <div  class="row m-3">
+    <button class="btn btn-secondary" (click)="onSubmit()">חיפוש</button>
+  </div>
+  
+
+ 
+</form>
+
+
+<kendo-grid
+[kendoGridBinding]="gridView"
+kendoGridSelectBy="id"
+[selectedKeys]="mySelection"
+[pageSize]="20"
+[pageable]="true"
+[sortable]="true"
+[groupable]="true"
+[reorderable]="true"
+[resizable]="true"
+[height]="500"
+[columnMenu]="{ filter: true }"
+>
+<ng-template kendoGridToolbarTemplate>
+  <button kendoGridExcelCommand icon="file-excel">Export to Excel</button>
+  <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
+
+</ng-template>
+<kendo-grid-excel fileName="Grid.xlsx">
+</kendo-grid-excel>
+  
+  <!-- <kendo-grid-spacer></kendo-grid-spacer> -->
+
+<!-- <kendo-grid-pdf   [repeatHeaders]="true"
+fileName="Grid.pdf">
+
+</kendo-grid-pdf> -->
+
+<kendo-grid-checkbox-column
+  [width]="45"
+  [headerClass]="{ 'text-center': true }"
+  [class]="{ 'text-center': true }"
+  [resizable]="false"
+  [columnMenu]="false"
+  [showSelectAll]="true"
+></kendo-grid-checkbox-column>
+
+
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span
+        *ngIf="dataItem.is_online === true"
+        class="badge badge-success"
+        >Online</span
+      >
+      <span
+        *ngIf="dataItem.is_online === false"
+        class="badge badge-danger"
+        >Offline</span
+      >
+    </ng-template>
+
+
+
+<kendo-grid-column-group title="" [columnMenu]="false">
+  <ng-container *ngFor="let col of columns" >
+    <kendo-grid-column [field]="col[0]" [title]="col[1]" [width]="130">
+    </kendo-grid-column>
+   
+  </ng-container>
+  
+</kendo-grid-column-group>
